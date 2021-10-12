@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <script>
+        let data;
+        axios.get('https://api.darksky.net/forecast/8eeafa93fa171bb970bfac9b03caa3a3/-18.9127749,-48.2755227?exclude=minutely,hourly,daily,flags,alerts')
+            .then(function (response) {
+                data = response.data;
+                processValues();
+            })
+
+        function processValues() {
+            let valores = [
+                data.timezone,
+                data.latitude,
+                data.longitude,
+                new Date,
+                data.currently.summary,
+                data.currently.precipIntensity,
+                data.currently.precipProbability,
+                data.currently.temperature,
+                data.currently.apparentTemperature,
+                data.currently.dewPoint,
+                data.currently.humidity,
+                data.currently.pressure,
+                data.currently.windSpeed,
+                data.currently.windGust,
+                data.currently.windBearing,
+                data.currently.cloudCover,
+                data.currently.uvIndex,
+                data.currently.visibility,
+                data.currently.ozone,
+                data.offset,
+            ]
+            
+            let colunas = ["Local",
+                "Latitude",
+                "Longitude",
+                "Data/Hora",
+                "Resumo",
+                "Intensidade de precipitação",
+                "Probabilidade de precipitação",
+                "Temperatura",
+                "Sensação térmica",
+                "Ponto de orvalho",
+                "Umidade",
+                "Pressão",
+                "Velocidade do vento",
+                "Rajada de vento",
+                "Direção do vento",
+                "Cobertura de nuvens",
+                "Índice UV",
+                "Visibilidade",
+                "Ozônio",
+                "Deslocamento"
+            ]
+
+            let tabela = $("#tabela");
+
+            for(let i = 0; i < colunas.length; i++) {
+                let tr = $("<tr>");
+                let th = $("<th>");
+                th.text(colunas[i]);
+                let td = $("<td>");
+                td.text(valores[i]);
+                tr.append(th);
+                tr.append(td);
+                tabela.append(tr);
+            }
+        }
+
+    </script>
+    <title>Clima API</title>
+</head>
+<body>
+    <table id="tabela">
+    </table>
+</body>
+</html>
